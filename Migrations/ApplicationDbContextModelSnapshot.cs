@@ -156,9 +156,6 @@ namespace CampusPlacementManagement.Migrations
 
                     b.HasKey("CollegeId");
 
-                    b.HasIndex("CollegeCode")
-                        .IsUnique();
-
                     b.ToTable("Colleges");
                 });
 
@@ -202,6 +199,36 @@ namespace CampusPlacementManagement.Migrations
                     b.HasIndex("HrId");
 
                     b.ToTable("Jobs");
+                });
+
+            modelBuilder.Entity("CampusPlacementManagement.Models.JobApplication", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("AppliedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("JobId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("StudentId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("JobId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("JobApplications");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -355,6 +382,25 @@ namespace CampusPlacementManagement.Migrations
                         .IsRequired();
 
                     b.Navigation("Hr");
+                });
+
+            modelBuilder.Entity("CampusPlacementManagement.Models.JobApplication", b =>
+                {
+                    b.HasOne("CampusPlacementManagement.Models.Job", "Job")
+                        .WithMany()
+                        .HasForeignKey("JobId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CampusPlacementManagement.Models.ApplicationUser", "Student")
+                        .WithMany()
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Job");
+
+                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

@@ -5,6 +5,7 @@ using CampusPlacementManagement.Data;
 using CampusPlacementManagement.DTOs;
 using CampusPlacementManagement.Models;
 using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
 
 namespace CampusPlacementManagement.Controllers
 {
@@ -64,6 +65,42 @@ namespace CampusPlacementManagement.Controllers
             await _context.SaveChangesAsync();
 
             return Ok(new { message = "Job approved successfully!" });
+        }
+        // 3. Student applies for an approved job
+        [HttpPost("{id}/apply")]
+        [Authorize(Roles = "Student")]
+        public async Task<IActionResult> ApplyForJob(int id)
+        {
+            var studentId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(studentId))
+                return Unauthorized(new { message = "User ID not found in token" });
+
+            // Check if job exists and is approved
+            var job = await _context.Jobs.FindAsync(id);
+            if (job == null || job.Status != JobStatus.Approved)
+                return NotFound(new { message = "Approved job not found" });
+
+            // Check if student already applied
+            // Check if student already applied
+            var existingApplication = await _context.JobApplications
+                .Where(a => a.JobId == id && a.StudentId == studentId)
+                .FirstOrDefaultAsync();
+
+            if (existingApplication != null)
+                return BadRequest(new { message = "You have already applied for this job." });
+
+            var application = new JobApplication
+            {
+                JobId = id,
+                StudentId = studentId,
+                Status = ApplicationStatus.Applied,
+                AppliedAt = DateTime.UtcNow
+            };
+
+            _context.JobApplications.Add(application);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Successfully applied for the job!", applicationId = application.Id });
         }
     }
 }

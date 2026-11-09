@@ -197,6 +197,22 @@
   },
   {
     "ContainingType": "CampusPlacementManagement.Controllers.JobsController",
+    "Method": "ApplyForJob",
+    "RelativePath": "api/jobs/{id}/apply",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CampusPlacementManagement.Controllers.JobsController",
     "Method": "ApproveJob",
     "RelativePath": "api/jobs/{id}/approve",
     "HttpMethod": "PUT",

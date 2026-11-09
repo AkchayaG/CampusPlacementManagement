@@ -11,14 +11,23 @@ namespace CampusPlacementManagement.Data
 
         public DbSet<College> Colleges { get; set; }
         public DbSet<Job> Jobs { get; set; }
-        protected override void OnModelCreating(ModelBuilder builder)
+        public DbSet<JobApplication> JobApplications { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(builder);
+            base.OnModelCreating(modelBuilder);
 
-            // Add any custom Fluent API configurations here if needed
-            builder.Entity<College>()
-                .HasIndex(c => c.CollegeCode)
-                .IsUnique();
+            // 👇 INTHA LINE-AH ADD PANNUNGA (Cascade delete path conflict-ah fix panrathukku)
+            modelBuilder.Entity<JobApplication>()
+                .HasOne(ja => ja.Job)
+                .WithMany()
+                .HasForeignKey(ja => ja.JobId)
+                .OnDelete(DeleteBehavior.Restrict); // or DeleteBehavior.NoAction
+
+            modelBuilder.Entity<JobApplication>()
+                .HasOne(ja => ja.Student)
+                .WithMany()
+                .HasForeignKey(ja => ja.StudentId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
