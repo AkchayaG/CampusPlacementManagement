@@ -124,5 +124,30 @@ namespace CampusPlacementManagement.Controllers
 
             return Ok(new { message = "Student registered successfully. Pending approval." });
         }
+        [HttpPost("register-hr")]
+        public async Task<IActionResult> RegisterCompanyHr([FromBody] RegisterCompanyHrDto model)
+        {
+            var existingUser = await _userManager.FindByEmailAsync(model.Email);
+            if (existingUser != null)
+                return BadRequest(new { message = "Email is already taken." });
+
+            var hrUser = new ApplicationUser
+            {
+                UserName = model.Email,
+                Email = model.Email,
+                FullName = model.HrName, // Or save company name if you have a separate property/table
+                AccountStatus = AccountStatus.Pending,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            var result = await _userManager.CreateAsync(hrUser, model.Password);
+            if (!result.Succeeded)
+                return BadRequest(result.Errors);
+
+            // Assign 'CompanyHR' Role
+            await _userManager.AddToRoleAsync(hrUser, "CompanyHR");
+
+            return Ok(new { message = "Company HR registered successfully. Pending approval." });
+        }
     }
 }

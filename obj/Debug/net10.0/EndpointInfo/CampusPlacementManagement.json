@@ -98,6 +98,37 @@
         }
       }
     },
+    "/api/auth/register-hr": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterCompanyHrDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterCompanyHrDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterCompanyHrDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/colleges/register": {
       "post": {
         "tags": [
@@ -245,6 +276,28 @@
         }
       }
     },
+    "/api/companies/{id}/approve": {
+      "put": {
+        "tags": [
+          "Companies"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/placement-officers/{id}/approve": {
       "put": {
         "tags": [
@@ -340,6 +393,42 @@
         },
         "additionalProperties": false
       },
+      "RegisterCompanyHrDto": {
+        "required": [
+          "companyName",
+          "email",
+          "hrName",
+          "password"
+        ],
+        "type": "object",
+        "properties": {
+          "companyName": {
+            "type": "string",
+            "nullable": true
+          },
+          "hrName": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "password": {
+            "type": "string",
+            "nullable": true
+          },
+          "industry": {
+            "type": "string",
+            "nullable": true
+          },
+          "website": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "RegisterPoDto": {
         "type": "object",
         "properties": {
@@ -406,6 +495,9 @@
     },
     {
       "name": "Colleges"
+    },
+    {
+      "name": "Companies"
     },
     {
       "name": "PlacementOfficers"
