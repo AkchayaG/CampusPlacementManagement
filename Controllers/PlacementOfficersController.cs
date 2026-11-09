@@ -34,5 +34,6 @@ namespace CampusPlacementManagement.Controllers
 
             return Ok(new { message = "Placement Officer approved successfully!" });
         }
+       
     }
 }

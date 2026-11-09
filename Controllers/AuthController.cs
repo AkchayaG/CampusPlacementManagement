@@ -95,5 +95,34 @@ namespace CampusPlacementManagement.Controllers
 
             return Ok(new { message = "Placement Officer registered successfully. Pending approval." });
         }
+        [HttpPost("register-student")]
+        public async Task<IActionResult> RegisterStudent([FromBody] RegisterStudentDto model)
+        {
+            // 1. Check if user already exists
+            var existingUser = await _userManager.FindByEmailAsync(model.Email);
+            if (existingUser != null)
+                return BadRequest(new { message = "Email is already taken." });
+
+            // 2. Create ApplicationUser object
+            var studentUser = new ApplicationUser
+            {
+                UserName = model.Email,
+                Email = model.Email,
+                FullName = model.FullName,
+                CollegeId = model.CollegeId,
+                AccountStatus = AccountStatus.Pending, // Or Approved based on your flow
+                CreatedAt = DateTime.UtcNow
+            };
+
+            // 3. Create user with password using UserManager
+            var result = await _userManager.CreateAsync(studentUser, model.Password);
+            if (!result.Succeeded)
+                return BadRequest(result.Errors);
+
+            // 4. Assign 'Student' Role
+            await _userManager.AddToRoleAsync(studentUser, "Student");
+
+            return Ok(new { message = "Student registered successfully. Pending approval." });
+        }
     }
 }
