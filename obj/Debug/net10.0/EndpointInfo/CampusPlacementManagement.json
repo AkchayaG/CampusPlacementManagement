@@ -36,6 +36,37 @@
         }
       }
     },
+    "/api/auth/register-po": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterPoDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterPoDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterPoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/colleges/register": {
       "post": {
         "tags": [
@@ -182,6 +213,28 @@
           }
         }
       }
+    },
+    "/api/placement-officers/{id}/approve": {
+      "put": {
+        "tags": [
+          "PlacementOfficers"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -233,6 +286,28 @@
           }
         },
         "additionalProperties": false
+      },
+      "RegisterPoDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "password": {
+            "type": "string",
+            "nullable": true
+          },
+          "collegeId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
       }
     }
   },
@@ -242,6 +317,9 @@
     },
     {
       "name": "Colleges"
+    },
+    {
+      "name": "PlacementOfficers"
     }
   ]
 }

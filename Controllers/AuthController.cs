@@ -4,6 +4,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.EntityFrameworkCore; // Needed for AnyAsync / FindAsync
+using CampusPlacementManagement.Data;
 using CampusPlacementManagement.DTOs;
 using CampusPlacementManagement.Models;
 
@@ -15,11 +17,13 @@ namespace CampusPlacementManagement.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IConfiguration _configuration;
+        private readonly ApplicationDbContext _context; // 1. Added DbContext
 
-        public AuthController(UserManager<ApplicationUser> userManager, IConfiguration _configuration)
+        public AuthController(UserManager<ApplicationUser> userManager, IConfiguration configuration, ApplicationDbContext context)
         {
             _userManager = userManager;
-            this._configuration = _configuration;
+            _configuration = configuration;
+            _context = context;
         }
 
         [HttpPost("login")]
@@ -48,7 +52,7 @@ namespace CampusPlacementManagement.Controllers
             var token = new JwtSecurityToken(
                 issuer: _configuration["Jwt:Issuer"],
                 audience: _configuration["Jwt:Audience"],
-                expires: DateTime.Now.AddHours(3), // or DateTime.Now.AddHours(3)
+                expires: DateTime.Now.AddHours(3),
                 claims: authClaims,
                 signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
             );
@@ -59,6 +63,37 @@ namespace CampusPlacementManagement.Controllers
                 Email = user.Email ?? string.Empty,
                 Role = userRoles.FirstOrDefault() ?? "User"
             });
+        }
+
+        [HttpPost("register-po")]
+        public async Task<IActionResult> RegisterPlacementOfficer([FromBody] RegisterPoDto model)
+        {
+            // 1. Check if College exists
+            var college = await _context.Colleges.FindAsync(model.CollegeId);
+            if (college == null)
+                return NotFound(new { message = "College not found" });
+
+            // 2. Check if College is Approved (Assuming Status == 1 or Approved enum)
+            // Uru vela ungaloda College model-la status 'Approved' Enum/Int-ah irunthal antha condition potukonga
+            if (college.Status != CollegeStatus.Approved)
+                return BadRequest(new { message = "College is not approved by SuperAdmin yet!" });
+
+            // 3. Create User using UserManager
+            var user = new ApplicationUser
+            {
+                UserName = model.Email,
+                Email = model.Email,
+                CollegeId = model.CollegeId // CollegeId link panrathu
+            };
+
+            var result = await _userManager.CreateAsync(user, model.Password);
+            if (!result.Succeeded)
+                return BadRequest(result.Errors);
+
+            // 4. Assign Role "PlacementOfficer"
+            await _userManager.AddToRoleAsync(user, "PlacementOfficer");
+
+            return Ok(new { message = "Placement Officer registered successfully. Pending approval." });
         }
     }
 }

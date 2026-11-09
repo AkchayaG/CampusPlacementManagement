@@ -169,5 +169,5 @@ D:\CampusPlacementManagement\CampusPlacementManagement\obj\Debug\net10.0\refint\
 D:\CampusPlacementManagement\CampusPlacementManagement\obj\Debug\net10.0\CampusPlacementManagement.pdb
 D:\CampusPlacementManagement\CampusPlacementManagement\obj\Debug\net10.0\CampusPlacementManagement.genruntimeconfig.cache
 D:\CampusPlacementManagement\CampusPlacementManagement\obj\Debug\net10.0\ref\CampusPlacementManagement.dll
-D:\CampusPlacementManagement\CampusPlacementManagement\obj\Debug\net10.0\staticwebassets.upToDateCheck.txt
 D:\CampusPlacementManagement\CampusPlacementManagement\obj\Debug\net10.0\CampusPlacementManagement.sourcelink.json
+D:\CampusPlacementManagement\CampusPlacementManagement\obj\Debug\net10.0\staticwebassets.upToDateCheck.txt

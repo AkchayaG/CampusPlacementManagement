@@ -16,6 +16,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "CampusPlacementManagement.Controllers.AuthController",
+    "Method": "RegisterPlacementOfficer",
+    "RelativePath": "api/auth/register-po",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "CampusPlacementManagement.DTOs.RegisterPoDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "CampusPlacementManagement.Controllers.CollegesController",
     "Method": "GetAll",
     "RelativePath": "api/colleges",
@@ -110,6 +126,22 @@
       {
         "Name": "dto",
         "Type": "CampusPlacementManagement.DTOs.CollegeRegisterDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CampusPlacementManagement.Controllers.PlacementOfficersController",
+    "Method": "ApprovePlacementOfficer",
+    "RelativePath": "api/placement-officers/{id}/approve",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.String",
         "IsRequired": true
       }
     ],

@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using CampusPlacementManagement.Models;
+
 
 namespace CampusPlacementManagement.Models
 {
@@ -8,5 +10,8 @@ namespace CampusPlacementManagement.Models
         public AccountStatus AccountStatus { get; set; } = AccountStatus.Pending;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+        // Intha property-ah add pannikonga (Placement Officer-ah College-oda link panna)
+        public int? CollegeId { get; set; }
+        public College? College { get; set; }
     }
 }
