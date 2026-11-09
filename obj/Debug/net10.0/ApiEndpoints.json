@@ -180,6 +180,32 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "CampusPlacementManagement.Controllers.InterviewsController",
+    "Method": "GetStudentInterviews",
+    "RelativePath": "api/interviews/my-interviews",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CampusPlacementManagement.Controllers.InterviewsController",
+    "Method": "ScheduleInterview",
+    "RelativePath": "api/interviews/schedule",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "CampusPlacementManagement.DTOs.ScheduleInterviewDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "CampusPlacementManagement.Controllers.JobsController",
     "Method": "PostJob",
     "RelativePath": "api/jobs",

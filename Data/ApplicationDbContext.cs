@@ -11,6 +11,7 @@ namespace CampusPlacementManagement.Data
 
         public DbSet<College> Colleges { get; set; }
         public DbSet<Job> Jobs { get; set; }
+        public DbSet<InterviewSchedule> InterviewSchedules { get; set; }
         public DbSet<JobApplication> JobApplications { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -28,6 +29,13 @@ namespace CampusPlacementManagement.Data
                 .WithMany()
                 .HasForeignKey(ja => ja.StudentId)
                 .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<InterviewSchedule>()
+                .HasOne(i => i.Job)
+                .WithMany()
+                .HasForeignKey(i => i.JobId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+
         }
     }
 }

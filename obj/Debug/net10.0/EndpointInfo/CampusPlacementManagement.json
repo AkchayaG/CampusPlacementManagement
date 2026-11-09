@@ -298,6 +298,49 @@
         }
       }
     },
+    "/api/interviews/schedule": {
+      "post": {
+        "tags": [
+          "Interviews"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScheduleInterviewDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScheduleInterviewDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScheduleInterviewDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/interviews/my-interviews": {
+      "get": {
+        "tags": [
+          "Interviews"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/jobs": {
       "post": {
         "tags": [
@@ -632,6 +675,28 @@
         },
         "additionalProperties": false
       },
+      "ScheduleInterviewDto": {
+        "type": "object",
+        "properties": {
+          "jobId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "studentId": {
+            "type": "string",
+            "nullable": true
+          },
+          "interviewDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "locationOrLink": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "UpdateApplicationStatusDto": {
         "type": "object",
         "properties": {
@@ -653,6 +718,9 @@
     },
     {
       "name": "Companies"
+    },
+    {
+      "name": "Interviews"
     },
     {
       "name": "Jobs"
