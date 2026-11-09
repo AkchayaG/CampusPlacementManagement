@@ -228,6 +228,27 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "CampusPlacementManagement.Controllers.JobsController",
+    "Method": "UpdateApplicationStatus",
+    "RelativePath": "api/jobs/applications/{applicationId}/status",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "applicationId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "CampusPlacementManagement.DTOs.UpdateApplicationStatusDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "CampusPlacementManagement.Controllers.PlacementOfficersController",
     "Method": "ApprovePlacementOfficer",
     "RelativePath": "api/placement-officers/{id}/approve",

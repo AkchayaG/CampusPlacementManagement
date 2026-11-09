@@ -102,5 +102,38 @@ namespace CampusPlacementManagement.Controllers
 
             return Ok(new { message = "Successfully applied for the job!", applicationId = application.Id });
         }
+        [HttpPut("applications/{applicationId}/status")]
+        [Authorize(Roles = "CompanyHR,PlacementOfficer")]
+        public async Task<IActionResult> UpdateApplicationStatus(int applicationId, [FromBody] UpdateApplicationStatusDto dto)
+        {
+            // 👇 Split the query to fix type inference error
+            var application = await _context.JobApplications
+                .Include(a => a.Job)
+                .Where(a => a.Id == applicationId)
+                .FirstOrDefaultAsync();
+
+            if (application == null)
+            {
+                return NotFound(new { message = "Job application not found." });
+            }
+
+            // Update status (Make sure 'Status' property matches your Enum/String type)
+            if (Enum.TryParse<ApplicationStatus>(dto.Status, true, out var parsedStatus))
+            {
+                application.Status = parsedStatus;
+            }
+            else
+            {
+                return BadRequest(new { message = "Invalid status value. Allowed values: Pending, Shortlisted, Rejected, Selected" });
+            }
+
+            // Oruvela JobApplication model-la UpdatedAt illana intha line-ah remove pannidalam
+            // application.UpdatedAt = DateTime.UtcNow; 
+
+            _context.JobApplications.Update(application);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = $"Application status updated to '{dto.Status}' successfully." });
+        }
     }
 }
