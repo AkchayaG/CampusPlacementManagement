@@ -10,7 +10,7 @@ namespace CampusPlacementManagement.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
         public DbSet<College> Colleges { get; set; }
-
+        public DbSet<Job> Jobs { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
